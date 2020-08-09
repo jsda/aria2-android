@@ -22,7 +22,7 @@ on:
     types: [started]
 
 env:
-  SSH_ACTIONS: true
+  SSH_ACTIONS: false
   UPLOAD_BIN_DIR: true
   GITHUB_REPO: jsda/aria2-android
   NDK_VER: android-ndk-r21d-linux-x86_64.zip
@@ -51,7 +51,8 @@ jobs:
     - name: Organize files
       run: |
         echo "======================="
-        wget https://dl.google.com/android/repository/$NDK_VER
+        git submodule update --init --recursive
+        wget -q https://dl.google.com/android/repository/$NDK_VER
         unzip -q $NDK_VER
         rm -rf $NDK_VER
         cd android-ndk-*

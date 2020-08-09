@@ -22,7 +22,7 @@ on:
     types: [started]
 
 env:
-  SSH_ACTIONS: false
+  SSH_ACTIONS: true
   UPLOAD_BIN_DIR: true
   GITHUB_REPO: jsda/aria2-android
   NDK_VER: android-ndk-r21d-linux-x86_64.zip
@@ -40,22 +40,20 @@ jobs:
       env:
         DEBIAN_FRONTEND: noninteractive
       run: |
-        echo "Deleting files, please wait ..."
-        sudo rm -rf /usr/share/dotnet
-        docker rmi `docker images -q`
-        sudo -E apt-get -q purge azure-cli ghc* zulu* hhvm llvm* firefox google* dotnet* powershell openjdk* mysql* php*
-        sudo -E apt-get -qq autoremove --purge
-        sudo rm -f /etc/apt/sources.list.d/*
         sudo -E apt-get -qq update
         sudo -E apt-get -qq install build-essential git curl ca-certificates \
         libxml2-dev libcppunit-dev autoconf automake autotools-dev autopoint libtool pkg-config zip
+
+    - name: SSH connection to Actions
+      uses: jsda/debugger-action@master
+      if: env.SSH_ACTIONS == 'true'
 
     - name: Organize files
       run: |
         echo "======================="
         wget https://dl.google.com/android/repository/$NDK_VER
         unzip -q $NDK_VER
-        rm -rf android-ndk*.zip
+        rm -rf $NDK_VER
         cd android-ndk-*
         export ANDROID_NDK_HOME=$PWD
         cd ..

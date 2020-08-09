@@ -22,7 +22,7 @@ on:
     types: [started]
 
 env:
-  SSH_ACTIONS: false
+  SSH_ACTIONS: true
   UPLOAD_BIN_DIR: true
   GITHUB_REPO: jsda/aria2-android
   NDK_VER: android-ndk-r21d-linux-x86_64.zip

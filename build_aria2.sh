@@ -15,7 +15,7 @@ print_help()
 Configurable parameters
    host_tag          - host value that will build the library (hint: you can take a look for this value
                        at your \$ANDROID_NDK_HOME/toolchains/llvm/prebuilt/ [default is linux-x86_64]
-   minsdkversion     - minimum sdk version to support, this is value of api level [default is 18]
+   minsdkversion     - minimum sdk version to support, this is value of api level [default is 21]
    target_abis       - target abis to build for, separated by space [default is \"armeabi-v7a x86 arm64-v8a x86_64\"]
    silent            - whether the compilation should be less verbose
 "
@@ -37,7 +37,7 @@ then
 fi
 
 host_tag=linux-x86_64
-minsdkversion=18
+minsdkversion=21
 target_abis="armeabi-v7a x86 arm64-v8a x86_64"
 silent=false
 
@@ -104,7 +104,7 @@ do
     install_dir=$INSTALL_DIR/x86_64
     CFLAGS="${CFLAGS} -march=x86-64 -msse4.2 -mpopcnt -m64 -mtune=intel"
   fi
-  
+
   echo ""
   echo "cc_prefix           = $cc_prefix"
   echo "support_prefix      = $support_prefix"
@@ -112,7 +112,7 @@ do
   echo "install_dir         = $install_dir"
   echo "CFLAGS              = $CFLAGS"
   echo ""
-  
+
   export AR=$TOOLCHAIN/bin/${support_prefix}ar
   export AS=$TOOLCHAIN/bin/${support_prefix}as
   export CC=$TOOLCHAIN/bin/${cc_prefix}clang
@@ -124,12 +124,25 @@ do
   configure_params=""
   make_params=""
   if [ "$silent" == "true" ]
-  then 
+  then
     make_params="-s V=0"
     configure_params="--silent"
   fi
 
   LIBS_TARGET_DIR=$LIBS_DIR/$target
+
+  echo "修改最大连接数TEXT_MAX_CONNECTION_PER_SERVER"
+    sed -i 's/1", 1, 16/128", 1, -1/' src/OptionHandlerFactory.cc
+    echo "修改PREF_MIN_SPLIT_SIZE, TEXT_MIN_SPLIT_SIZE"
+    sed -i 's/"20M", 1_m, 1_g/"4K", 1_k, 1_g/' src/OptionHandlerFactory.cc
+    echo "修改TEXT_CONNECT_TIMEOUT"
+    sed -i 's/TEXT_CONNECT_TIMEOUT, "60", 1, 600/TEXT_CONNECT_TIMEOUT, "30", 1, 600/' src/OptionHandlerFactory.cc
+    echo "修改TEXT_PIECE_LENGTH"
+    sed -i 's/TEXT_PIECE_LENGTH, "1M", 1_m/TEXT_PIECE_LENGTH, "4k", 1_k/' src/OptionHandlerFactory.cc
+    echo "修改TEXT_RETRY_WAIT"
+    sed -i 's/TEXT_RETRY_WAIT, "0", 0, 600/TEXT_RETRY_WAIT, "2", 0, 600/' src/OptionHandlerFactory.cc
+    echo "修改PREF_SPLIT, TEXT_SPLIT"
+    sed -i 's/PREF_SPLIT, TEXT_SPLIT, "5"/PREF_SPLIT, TEXT_SPLIT, "8"/' src/OptionHandlerFactory.cc
 
   ./configure \
     --host="$host" \
@@ -138,7 +151,7 @@ do
     --disable-nls \
     --without-gnutls \
     --with-openssl \
-    --without-sqlite3 \
+    --with-sqlite3 \
     --without-libxml2 \
     --with-libexpat \
     --with-libcares \
@@ -151,7 +164,7 @@ do
     LDFLAGS="-fPIE -pie -L$LIBS_TARGET_DIR/lib -static-libstdc++" \
     PKG_CONFIG_LIBDIR="$LIBS_TARGET_DIR/lib/pkgconfig" || exit
 
-    
+
   make $make_params clean || exit
   make -j `nproc` $make_params || exit
   make install || exit

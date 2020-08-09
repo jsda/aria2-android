@@ -8,7 +8,7 @@ Configurable parameters
                        it need to be in relative path from the directory executing this script [default is libs]
    host_tag          - host value that will build the library (hint: you can take a look for this value
                        at your \$ANDROID_NDK_HOME/toolchains/llvm/prebuilt/ [default is linux-x86_64]
-   minsdkversion     - minimum sdk version to support, this is value of api level [default is 18]
+   minsdkversion     - minimum sdk version to support, this is value of api level [default is 21]
    target_abis       - target abis to build for, separated by space [default is \"armeabi-v7a x86 arm64-v8a x86_64\"]
    configure_params  - additional params to pass to ./configure
    fresh_build       - whether or not this is a fresh build, user might be using this when repeatitively build the same project over and over i.e. while debugging, so there's no need to keep re-execute './configure' and 'make clean' again. [default is true]
@@ -35,7 +35,7 @@ fi
 
 out_path=libs
 host_tag=linux-x86_64
-minsdkversion=18
+minsdkversion=21
 target_abis="armeabi-v7a x86 arm64-v8a x86_64"
 configure_params=""
 fresh_build=true
@@ -129,7 +129,7 @@ do
     install_dir=`pwd`/"$out_path"/x86_64
     CFLAGS="${CFLAGS} -march=x86-64 -msse4.2 -mpopcnt -m64 -mtune=intel"
   fi
-  
+
   echo ""
   echo "cc_prefix           = $cc_prefix"
   echo "support_prefix      = $support_prefix"
@@ -137,7 +137,7 @@ do
   echo "install_dir         = $install_dir"
   echo "CFLAGS              = $CFLAGS"
   echo ""
-  
+
   export AR=$TOOLCHAIN/bin/${support_prefix}ar
   export AS=$TOOLCHAIN/bin/${support_prefix}as
   export CC=$TOOLCHAIN/bin/${cc_prefix}clang
@@ -151,18 +151,18 @@ do
   then
     VERBOSE_FLAGS=""
     if [ "$silent" == "true" ]
-    then 
+    then
       VERBOSE_FLAGS="-s V=0"
       configure_params="$custom_silent $configure_params"
     fi
 
     if [ "$no_host" == "true" ]
-    then 
+    then
       ./configure --prefix="$install_dir" $configure_params || exit
     else
       ./configure --host="$host" --prefix="$install_dir" $configure_params || exit
     fi
-    
+
     make $VERBOSE_FLAGS clean || exit
   fi
 

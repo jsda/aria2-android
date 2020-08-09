@@ -151,7 +151,7 @@ do
     --disable-nls \
     --without-gnutls \
     --with-openssl \
-    --with-sqlite3 \
+    --without-sqlite3 \
     --without-libxml2 \
     --with-libexpat \
     --with-libcares \

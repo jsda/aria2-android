@@ -10,6 +10,12 @@ before_script:
   - export ANDROID_NDK_HOME=`pwd`/android-ndk-r21
   - export PATH=$ANDROID_NDK_HOME/toolchains/llvm/prebuilt/linux-x86_64/bin:$PATH
   - export SILENT=true
+  - git clone -b master --depth 1 https://github.com/aria2/aria2
+  - git clone -b master --depth 1 https://github.com/c-ares/c-ares
+  - git clone -b master --depth 1 https://github.com/libexpat/libexpat
+  - git clone -b master --depth 1 https://github.com/madler/zlib
+  - git clone -b OpenSSL_1_1_1-stable --depth 1 https://github.com/openssl/openssl
+  - git clone -b master --depth 1 https://github.com/libssh2/libssh2
 
 script:
   - ./build_all.sh

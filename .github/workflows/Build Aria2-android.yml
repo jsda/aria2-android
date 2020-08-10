@@ -26,7 +26,7 @@ env:
   UPLOAD_BIN_DIR: true
   GITHUB_REPO: jsda/aria2-android
   NDK_VER: android-ndk-r21d-linux-x86_64.zip
-  TZ: Asia/Shanghai
+  TZ: Asia/Taipei
 
 jobs:
   build:
@@ -71,10 +71,16 @@ jobs:
         echo "======================="
         echo "$(df -h)"
         echo "======================="
-        zip -9 -r aria2-armeabi-v7a.zip ./bin/armeabi-v7a/bin/aria2c
-        zip -9 -r aria2-arm64-v8a.zip ./bin/arm64-v8a/bin/aria2c
-        zip -9 -r aria2-x86.zip ./bin/x86/bin/aria2c
-        zip -9 -r aria2-x86_64.zip ./bin/x86_64/bin/aria2c
+        echo "$PWD"
+        echo "======================="
+        echo "$(ls -fl $PWD)"
+        echo "======================="
+        echo "$(ls -fl $INSTALL_DIR)"
+        echo "======================="
+        find $INSTALL_DIR/armeabi-v7a/* -maxdepth 3 -name "aria2c" | xargs -i cp -a {} ./ && zip -9 -r aria2-armeabi-v7a.zip ./aria2c && rm -rf aria2c && echo "armeabi-v7a拷贝成功" || echo "armeabi-v7a拷贝失败"
+        find $INSTALL_DIR/arm64-v8a/* -maxdepth 3 -name "aria2c" | xargs -i cp -a {} ./ && zip -9 -r aria2-arm64-v8a.zip ./aria2c && rm -rf aria2c && echo "arm64-v8a拷贝成功" || echo "arm64-v8a拷贝失败"
+        find $INSTALL_DIR/x86/* -maxdepth 3 -name "aria2c" | xargs -i cp -a {} ./ && zip -9 -r aria2-x86.zip ./aria2c && rm -rf aria2c && echo "x86拷贝成功" || echo "x86拷贝失败"
+        find $INSTALL_DIR/x86_64/* -maxdepth 3 -name "aria2c" | xargs -i cp -a {} ./ && zip -9 -r aria2-x86_64.zip ./aria2c && rm -rf aria2c && echo "x86_64拷贝成功" || echo "x86_64拷贝失败"
         mkdir -p aria2build
         mv aria2-*.zip aria2build
         echo "::set-env name=DATE::$(date "+%Y%m%d-%H%M")"

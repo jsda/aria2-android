@@ -150,12 +150,21 @@ do
     CFLAGS="-Os -g" \
     CPPFLAGS="-fPIE" \
     LDFLAGS="-fPIE -pie -L$LIBS_TARGET_DIR/lib -static-libstdc++" \
-    PKG_CONFIG_LIBDIR="$LIBS_TARGET_DIR/lib/pkgconfig" || exit
+    PKG_CONFIG_LIBDIR="$LIBS_TARGET_DIR/lib/pkgconfig" \
+    ARIA2_STATIC=yes \
+    --enable-shared=no || exit
 
 
   make $make_params clean || exit
   make -j `nproc` $make_params || exit
-  make install || exit
+  #make install || exit
+  cd src || exit
+  $STRIP aria2c || echo "STRIP ERROR"
+  echo "## Aria2-$target SHA512" > aria2-$target.txt || exit
+  echo "$(sha512sum aria2c*)" >> aria2-$target.txt || exit
+  zip -9 -r aria2-$target.zip aria2c* || exit
+  mv aria2-$target.zip aria2-$target.txt $OUTPUT_DIR/ || exit
+  cd ..  || exit
   echo "Done building $target"
 done
 

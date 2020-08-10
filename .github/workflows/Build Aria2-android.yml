@@ -65,25 +65,19 @@ jobs:
         cd ..
         export PATH=$ANDROID_NDK_HOME/toolchains/llvm/prebuilt/linux-x86_64/bin:$PATH
         export SILENT=true
+        mkdir -p output
+        export OUTPUT_DIR=$PWD/output
         ./build_all.sh
-        cd ..
         echo "Space usage:"
         echo "======================="
         echo "$(df -h)"
         echo "======================="
         echo "$PWD"
         echo "======================="
-        echo "$(ls -fl $PWD)"
+        echo "$(ls -fl $OUTPUT_DIR)"
         echo "======================="
-        echo "$(ls -fl $INSTALL_DIR)"
-        echo "======================="
-        find $INSTALL_DIR/armeabi-v7a/* -maxdepth 3 -name "aria2c" | xargs -i cp -a {} ./ && zip -9 -r aria2-armeabi-v7a.zip ./aria2c && rm -rf aria2c && echo "armeabi-v7a拷贝成功" || echo "armeabi-v7a拷贝失败"
-        find $INSTALL_DIR/arm64-v8a/* -maxdepth 3 -name "aria2c" | xargs -i cp -a {} ./ && zip -9 -r aria2-arm64-v8a.zip ./aria2c && rm -rf aria2c && echo "arm64-v8a拷贝成功" || echo "arm64-v8a拷贝失败"
-        find $INSTALL_DIR/x86/* -maxdepth 3 -name "aria2c" | xargs -i cp -a {} ./ && zip -9 -r aria2-x86.zip ./aria2c && rm -rf aria2c && echo "x86拷贝成功" || echo "x86拷贝失败"
-        find $INSTALL_DIR/x86_64/* -maxdepth 3 -name "aria2c" | xargs -i cp -a {} ./ && zip -9 -r aria2-x86_64.zip ./aria2c && rm -rf aria2c && echo "x86_64拷贝成功" || echo "x86_64拷贝失败"
-        mkdir -p aria2build
-        mv aria2-*.zip aria2build
         echo "::set-env name=DATE::$(date "+%Y%m%d-%H%M")"
+        echo "::set-env name=OUTPUT_DIR::$PWD/output"
 
     - name: Upload Packages
       id: upload_packages
@@ -91,7 +85,7 @@ jobs:
       env:
         GITHUB_TOKEN: ${{ secrets.TOKEN }}
       run: |
-        cd aria2build
+        cd output || cd $OUTPUT_DIR
         git init
         git config user.name "actions"
         git config user.email "actions@github.com"

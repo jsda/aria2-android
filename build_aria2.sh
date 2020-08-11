@@ -150,9 +150,7 @@ do
     CFLAGS="-Os -g" \
     CPPFLAGS="-fPIE" \
     LDFLAGS="-fPIE -pie -L$LIBS_TARGET_DIR/lib -static-libstdc++" \
-    PKG_CONFIG_LIBDIR="$LIBS_TARGET_DIR/lib/pkgconfig" \
-    ARIA2_STATIC=yes \
-    --enable-shared=no || exit
+    PKG_CONFIG_LIBDIR="$LIBS_TARGET_DIR/lib/pkgconfig" || exit
 
 
   make $make_params clean || exit

@@ -22,7 +22,7 @@ on:
     types: [started]
 
 env:
-  SSH_ACTIONS: false
+  SSH_ACTIONS: true
   UPLOAD_BIN_DIR: true
   GITHUB_REPO: jsda/aria2-android
   NDK_VER: android-ndk-r21d-linux-x86_64.zip
@@ -43,10 +43,6 @@ jobs:
         sudo -E apt-get -qq update
         sudo -E apt-get -qq install build-essential git curl ca-certificates \
         libxml2-dev libcppunit-dev autoconf automake autotools-dev autopoint libtool pkg-config zip
-
-    - name: SSH connection to Actions
-      uses: jsda/debugger-action@master
-      if: env.SSH_ACTIONS == 'true'
 
     - name: Organize files
       run: |
@@ -78,6 +74,10 @@ jobs:
         echo "======================="
         echo "::set-env name=DATE::$(date "+%Y%m%d-%H%M")"
         echo "::set-env name=OUTPUT_DIR::$PWD/output"
+
+    - name: SSH connection to Actions
+      uses: jsda/debugger-action@master
+      if: env.SSH_ACTIONS == 'true'
 
     - name: Upload Packages
       id: upload_packages

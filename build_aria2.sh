@@ -137,14 +137,20 @@ do
     --build=`dpkg-architecture -qDEB_BUILD_GNU_TYPE` \
     --prefix="$install_dir" \
     --disable-nls \
-    --without-gnutls \
     --with-openssl \
-    --without-sqlite3 \
-    --without-libxml2 \
     --with-libexpat \
     --with-libcares \
     --with-libz \
     --with-libssh2 \
+    --without-gnutls \
+    --without-libgcrypt \
+    --without-libgmp \
+    --without-libnettle \
+    --without-libxml2 \
+    --without-sqlite3 \
+    --with-ca-bundle='/etc/ssl/certs/ca-certificates.crt' \
+    --enable-shared=no \
+    ARIA2_STATIC=yes \
     $configure_params \
     CXXFLAGS="-Os -g" \
     CFLAGS="-Os -g" \

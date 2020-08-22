@@ -136,18 +136,17 @@ do
     --host="$host" \
     --build=`dpkg-architecture -qDEB_BUILD_GNU_TYPE` \
     --prefix="$install_dir" \
-    --disable-nls \
     --with-openssl \
     --with-libexpat \
     --with-libcares \
     --with-libz \
     --with-libssh2 \
+    --without-sqlite3 \
     --without-gnutls \
     --without-libgcrypt \
     --without-libgmp \
     --without-libnettle \
     --without-libxml2 \
-    --without-sqlite3 \
     --with-ca-bundle='/etc/ssl/certs/ca-certificates.crt' \
     --enable-shared=no \
     ARIA2_STATIC=yes \

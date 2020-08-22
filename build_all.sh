@@ -70,7 +70,7 @@ echo -e "\n\n----- Build sqlite (`git describe --tags`) -----"
 ../androidbuildlib out_path=../libs minsdkversion=21 \
 	target_abis="armeabi-v7a x86 arm64-v8a x86_64" \
 	silent="$SILENT" custom_silent="" \
-	configure_params="--build=$(dpkg-architecture -qDEB_BUILD_GNU_TYPE) --enable-static -enable-shared"
+	configure_params="--build=$(dpkg-architecture -qDEB_BUILD_GNU_TYPE) --enable-static -disable-shared"
 cd ..
 
 

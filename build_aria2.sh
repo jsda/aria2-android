@@ -149,6 +149,7 @@ do
     --without-libxml2 \
     --with-ca-bundle='/etc/ssl/certs/ca-certificates.crt' \
     --enable-shared=no \
+    OPENSSL_LIBS='-lssl -ldl -lcrypto -ldl -lpthread' \
     ARIA2_STATIC=yes \
     $configure_params \
     CXXFLAGS="-Os -g" \

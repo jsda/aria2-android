@@ -3,7 +3,7 @@
 
 ## 需要在aria2.conf里面指定证书路径
 `
-ca-certificates=你的ssl证书路径
+ca-certificate=你的ssl证书路径
 `
 
 ## Download

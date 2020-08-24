@@ -1,5 +1,10 @@
-# aria2-android
+# Aria2-Android
 ![Build Aria2-android](https://github.com/jsda/aria2-android/workflows/Build%20Aria2-android/badge.svg)
+
+## 需要在aria2.conf里面指定证书路径
+`
+ca-certificates=你的ssl证书路径
+`
 
 ## Download
 * [Aria2 arm64]

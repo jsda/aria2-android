@@ -17,9 +17,9 @@ on:
 #    paths:
 #      - 'x64.sh'
   schedule:
-    - cron: 0 1 3 * *
-#  watch:
-#    types: [started]
+    - cron: 10 1 3 * *
+  watch:
+    types: [started]
 
 env:
   SSH_ACTIONS: false

@@ -25,7 +25,7 @@ env:
   SSH_ACTIONS: false
   UPLOAD_BIN_DIR: true
   GITHUB_REPO: jsda/aria2-android
-  NDK_VER: android-ndk-r21d-linux-x86_64.zip
+  NDK_VER: android-ndk-r21e-linux-x86_64.zip
   TZ: Asia/Taipei
 
 jobs:
@@ -46,6 +46,7 @@ jobs:
 
     - name: Sync Packages
       run: ./up.sh
+
     - name: Organize files
       run: |
         echo "======================="

@@ -44,6 +44,8 @@ jobs:
         sudo -E apt-get -qq install build-essential git curl ca-certificates \
         libxml2-dev libcppunit-dev autoconf automake autotools-dev autopoint libtool pkg-config zip
 
+    - name: Sync Packages
+      run: ./up.sh
     - name: Organize files
       run: |
         echo "======================="
